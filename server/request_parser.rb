@@ -15,15 +15,15 @@ class Parser
         path, params = path.split("?")
         self.parsed_request = {
             path: path,
-            params: get_params(params),
-            method: method,
-            headers: parse_headers
+            headers: parse_headers(method),
+            params: get_params(params, method),
+            method: method
         }
     end
 
     private
 
-    def parse_headers
+    def parse_headers(method)
         headers = {}
 
         request.lines[1..-1].each do |line|
@@ -38,8 +38,16 @@ class Parser
         header.gsub(":", "").downcase.to_sym
     end
 
-    def get_params(params)
-        return [] unless params
-        URI::decode_www_form(params).to_h.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
+    def get_params(params, method)
+        if method == "POST"
+            begin
+                JSON.parse(self.request.lines[1..-1][self.request.lines[1..-1].index("\r\n")+1..-1].join).inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
+            rescue
+                []
+            end
+        else
+            return [] unless params
+            URI::decode_www_form(params).to_h.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
+        end
     end
 end
