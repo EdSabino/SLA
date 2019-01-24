@@ -1,0 +1,1 @@
+require_relative "inner_joins.rb"

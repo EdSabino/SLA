@@ -1,0 +1,1 @@
+require_relative "postgres_adapter.rb"

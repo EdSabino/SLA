@@ -41,13 +41,13 @@ class Parser
     def get_params(params, method)
         if method == "POST"
             begin
-                JSON.parse(self.request.lines[1..-1][self.request.lines[1..-1].index("\r\n")+1..-1].join).inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
+                JSON.parse(self.request.lines[1..-1][self.request.lines[1..-1].index("\r\n")+1..-1].join)
             rescue
                 []
             end
         else
             return [] unless params
-            URI::decode_www_form(params).to_h.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
+            URI::decode_www_form(params).to_h
         end
     end
 end

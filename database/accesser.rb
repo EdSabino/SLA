@@ -1,6 +1,6 @@
 require "pg"
 require_relative "db_config.rb"
-require_relative "../lib/arel/select_manager.rb"
+require_relative "../lib/arel/select_management/select_manager.rb"
 
 class Accesser
 

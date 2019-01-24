@@ -11,7 +11,7 @@ class StartController < Controller
 
     def edit
         @uh = "ok"
-        query = "SLA"
+        binding.pry
         # Accesser.new().connect_to_db(query)
     end
 end

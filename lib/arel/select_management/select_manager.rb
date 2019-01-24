@@ -1,28 +1,23 @@
-require_relative "select.rb"
-require_relative "from.rb"
-require_relative "arel_table.rb"
-require_relative "../../database/accesser.rb"
+require_relative "require_select.rb"
+require_relative "../../../database/accesser.rb"
+require_relative "../../../database/db_config.rb"
+# require_relative "db_types/require_db_type.rb"
+require_relative "visitor.rb"
+
 
 class SelectManager
-    attr_accessor :froms, :selects, :wheres, :joins, :raw_result, :results
+    attr_accessor :froms, :selects, :wheres, :joins, :raw_result, :results, :limit, :groups
 
     def initialize()
         @selects = []
         @wheres = []
         @joins = []
+        @groups = []
     end
 
     def from(expression)
         self.froms = From.new(expression)
         self
-    end
-
-    def build_sql
-        str = "SELECT "
-        str += get_selects
-        str += " FROM "
-        str += get_from
-        str += " WHERE (" + get_where + ")"
     end
 
     def select(expression)
@@ -32,32 +27,33 @@ class SelectManager
 
     def where(expression)
         self.wheres << Where.new(expression)
+        self
+    end
+
+    def join(destiny, condition)
+        self.joins << Joins.new(destiny, condition)
+        self
+    end
+
+    def limit_to(number)
+        self.limit = Limit.new(number)
     end
 
     def get_results_obj
-        self.raw_result = Accesser.new().connect_to_db(self.build_sql)
+        self.raw_result = Accesser.new().connect_to_db(self.to_sql)
         turn_to_object
     end
 
     def get_results_hash
-        self.raw_result = Accesser.new().connect_to_db(self.build_sql)
+        self.raw_result = Accesser.new().connect_to_db(self.to_sql)
         turn_to_hash
     end
 
+    def to_sql
+        return Visitor.visit(DbConfig.new.type_db.to_s, self)
+    end
+
     private
-
-    def get_selects
-        return "*" unless self.selects.any?
-        return self.selects.map { |select| select.get_result_string }.join(", ")
-    end
-
-    def get_from
-        self.froms.get_result_string
-    end
-
-    def get_where
-        return self.wheres.map { |where| where.get_result_string }.join(") AND (")
-    end
 
     def turn_to_object
         self.results = []
@@ -69,6 +65,7 @@ class SelectManager
             end
             self.results << obj
         end
+        self.results
     end
 
     def turn_to_hash
@@ -76,6 +73,7 @@ class SelectManager
         self.raw_result.each do |hash|
             self.results << hash
         end
+        self.results
     end
 
 end
