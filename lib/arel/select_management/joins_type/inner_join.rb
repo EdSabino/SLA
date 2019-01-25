@@ -1,13 +1,9 @@
-class InnerJoin
+require_relative "resolver_db.rb"
 
-    attr_accessor :type
-
-    def initialize
-        @type = " INNER JOIN "
-    end
+class InnerJoin < ResolverDb
 
     def get_result_string
-        self.type
+        self.visit
     end
 
 end

@@ -1,13 +1,9 @@
-class FullOuterJoin
+require_relative "resolver_db.rb"
 
-    attr_accessor :type
-
-    def initialize
-        @type = " FULL OUTER JOIN "
-    end
+class FullOuterJoin < ResolverDb
 
     def get_result_string
-        self.type
+        self.visit
     end
 
 end

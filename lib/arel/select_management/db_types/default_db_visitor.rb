@@ -2,13 +2,29 @@ class DefaultDbVisitor
 
     def accept_case(obj_case)
         str = " CASE " + obj_case.whens.map {|when_obj| when_obj.get_result_string}.join(" ")
-        str += " ELSE " + obj.else.get_result_string if obj_case.else
+        str += " ELSE " + obj_case.else_result.get_result_string if obj_case.else_result
         str += " END "
         return str
     end
 
     def accept_when(obj_when)
         " WHEN " + obj_when.expression.get_result_string + " THEN " + obj_when.result.get_result_string
+    end
+
+    def accept_sqlliteral(obj_sql)
+        obj_sql.expression
+    end
+
+    def accept_leftjoin(left_join_obj)
+        " LEFT JOIN "
+    end
+
+    def accept_innerjoin(inner_join_obj)
+        " INNER JOIN "
+    end
+
+    def accept_fullouterjoin(full_outer_join_obj)
+        " FULL OUTER JOIN "
     end
 
     def accept_attribute(obj_attr)

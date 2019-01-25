@@ -5,7 +5,7 @@ require_relative "../utils.rb"
 class Case < ResolverDb
     include Utils
 
-    attr_accessor :attribute, :else, :whens
+    attr_accessor :attribute, :else_result, :whens
 
     def initialize(attribute)
         @attribute = resolve_type(attribute)
@@ -19,7 +19,7 @@ class Case < ResolverDb
     end
 
     def else(result)
-        self.else = resolve_type(result)
+        self.else_result = resolve_type(result)
         self
     end
 

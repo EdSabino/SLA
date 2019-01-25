@@ -1,7 +1,9 @@
-class LeftJoin
+require_relative "resolver_db.rb"
+
+class LeftJoin < ResolverDb
 
     def get_result_string
-        " LEFT JOIN "
+        self.visit
     end
 
 end

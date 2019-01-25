@@ -1,6 +1,8 @@
 require_relative "resolver_db.rb"
+require_relative "../utils.rb"
 
 class When < ResolverDb
+    include Utils
 
     attr_accessor :expression, :result, :case
 

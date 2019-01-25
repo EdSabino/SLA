@@ -1,4 +1,6 @@
-class SqlLiteral
+require_relative "select_management/resolver_db.rb"
+
+class SqlLiteral < ResolverDb
 
     attr_accessor :expression
 
@@ -7,6 +9,6 @@ class SqlLiteral
     end
 
     def get_result_string
-        return self.expression
+        self.visit
     end
 end
