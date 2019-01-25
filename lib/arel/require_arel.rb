@@ -1,5 +1,1 @@
-require_relative "select_management/from.rb"
-require_relative "select_management/select.rb"
 require_relative "select_management/select_manager.rb"
-require_relative "select_management/table.rb"
-require_relative "select_management/attribute.rb"

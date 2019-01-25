@@ -1,4 +1,6 @@
-require_relative "../controller.rb"
+require_relative "../../lib/controllers/controller.rb"
+require_relative "../../lib/models/require_models.rb"
+
 class StartController < Controller
 
     def index

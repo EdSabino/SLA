@@ -1,5 +1,5 @@
-require_relative "../controller.rb"
-require_relative "../require_controllers.rb"
+require_relative "../lib/controllers/controller.rb"
+require_relative "../lib/controllers/require_controllers.rb"
 require_relative "routes.rb"
 SERVER_HOST = "views/"
 
@@ -25,7 +25,7 @@ class Response
     private
 
     def respond_with
-        File.exists?("views#{self.path.url_path}.html.erb") ? send_ok_response : send_file_not_found
+        File.exists?("app/views#{self.path.url_path}.html.erb") ? send_ok_response : send_file_not_found
     end
 
     def send_ok_response

@@ -1,0 +1,1 @@
+Dir["app/controllers/*.rb"].each  { |file| require_relative "../../#{file}" }

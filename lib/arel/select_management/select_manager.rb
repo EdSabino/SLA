@@ -8,7 +8,7 @@ require_relative "visitor.rb"
 class SelectManager
     attr_accessor :froms, :selects, :wheres, :joins, :raw_result, :results, :limit, :groups
 
-    def initialize()
+    def initialize(obj=nil)
         @selects = []
         @wheres = []
         @joins = []
@@ -45,9 +45,9 @@ class SelectManager
         self
     end
 
-    def get_results_obj
+    def get_results_obj(obj=nil)
         self.raw_result = Accesser.new().connect_to_db(self.to_sql)
-        turn_to_object
+        obj ? pass_to_object(obj) : turn_to_object
     end
 
     def get_results_hash
@@ -80,6 +80,16 @@ class SelectManager
             self.results << hash
         end
         self.results
+    end
+
+    def pass_to_object(obj)
+        binding.pry
+        self.raw_result.each do |hash|
+            obj.attributes.each do |att|
+                obj.send("#{att}=", hash[att])
+            end
+        end
+        obj
     end
 
 end

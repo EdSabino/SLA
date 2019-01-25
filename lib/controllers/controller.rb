@@ -1,9 +1,9 @@
 require "erb"
 require "pry"
 # require_relative "require_controllers.rb"
-require_relative "lib/after_execute.rb"
-require_relative "database/accesser.rb"
-require_relative "lib/arel/require_arel.rb"
+require_relative "../after_execute.rb"
+require_relative "../../database/accesser.rb"
+require_relative "../arel/require_arel.rb"
 
 class Controller
 

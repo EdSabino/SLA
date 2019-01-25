@@ -1,0 +1,1 @@
+Dir["app/models/*.rb"].each  { |file| require_relative "../../#{file}" }
