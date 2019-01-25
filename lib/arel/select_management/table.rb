@@ -1,8 +1,9 @@
 require_relative "attribute.rb"
 require_relative "select_manager.rb"
 require_relative "operators.rb"
+require_relative "resolver_db.rb"
 
-class Table
+class Table < ResolverDb
     attr_accessor :name
 
     def initialize(name)
@@ -10,7 +11,7 @@ class Table
     end
 
     def get_result_string
-        return self.name
+        self.visit
     end
 
     def attr(attribute_name)

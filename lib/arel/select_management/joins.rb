@@ -1,6 +1,9 @@
 require_relative "../sql_literal.rb"
 require_relative "../utils.rb"
-class Joins
+require_relative "resolver_db.rb"
+require_relative "joins_type/require_joins.rb"
+
+class Joins < ResolverDb
     include Utils
 
     attr_accessor :destiny, :condition, :type
@@ -12,7 +15,7 @@ class Joins
     end
 
     def get_result_string
-        " #{type.get_result_string} " + self.destiny.get_result_string + " ON " + self.condition.get_result_string
+        self.visit
     end
 
     private

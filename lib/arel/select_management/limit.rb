@@ -1,4 +1,6 @@
-class Limit
+require_relative "resolver_db.rb"
+
+class Limit < ResolverDb
 
     attr_accessor :number
 
@@ -7,7 +9,7 @@ class Limit
     end
 
     def get_result_string
-        self.number
+        self.visit
     end
 
 end

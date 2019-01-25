@@ -30,13 +30,19 @@ class SelectManager
         self
     end
 
-    def join(destiny, condition)
-        self.joins << Joins.new(destiny, condition)
+    def join(destiny, condition, type=:inner)
+        self.joins << Joins.new(destiny, condition, type)
         self
     end
 
     def limit_to(number)
         self.limit = Limit.new(number)
+        self
+    end
+
+    def group_by(attribute)
+        self.groups << Group.new(attribute)
+        self
     end
 
     def get_results_obj
@@ -50,7 +56,7 @@ class SelectManager
     end
 
     def to_sql
-        return Visitor.visit(DbConfig.new.type_db.to_s, self)
+        return Visitor.visit(DbConfig.new.type_db.to_s, "sql", self)
     end
 
     private

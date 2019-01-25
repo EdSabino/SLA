@@ -12,6 +12,8 @@ class StartController < Controller
     def edit
         @uh = "ok"
         binding.pry
-        # Accesser.new().connect_to_db(query)
+        ir = Table.new(:ir)
+        query = ir.select(ir.attr("*")).limit_to('10')
+        @result = query.get_results_hash
     end
 end

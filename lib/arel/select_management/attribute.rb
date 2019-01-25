@@ -1,7 +1,8 @@
 require_relative "operators.rb"
 require_relative "../utils.rb"
+require_relative "resolver_db.rb"
 
-class Attribute
+class Attribute < ResolverDb
     include Utils
 
     attr_accessor :name, :table
@@ -19,7 +20,11 @@ class Attribute
         Condition.new(Operators.new(self, right, "IN"))
     end
 
+    def case
+        Case.new(self)
+    end
+
     def get_result_string
-        self.table.get_result_string + "." + self.name
+        self.visit
     end
 end

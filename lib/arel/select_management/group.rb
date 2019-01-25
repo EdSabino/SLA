@@ -1,5 +1,7 @@
 require_relative "../utils.rb"
-class Group
+require_relative "resolver_db.rb"
+
+class Group < ResolverDb
     include Utils
 
     attr_accessor :attribute
@@ -9,7 +11,7 @@ class Group
     end
 
     def get_result_string
-        self.attribute.get_result_string
+        self.visit
     end
 
 end

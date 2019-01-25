@@ -9,4 +9,7 @@ class DbConfig
         @host     = "localhost"
     end
 
+    def return_type
+        self.type_db.to_s.capitalize
+    end
 end

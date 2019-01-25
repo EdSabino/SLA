@@ -1,6 +1,7 @@
 require_relative "../utils.rb"
+require_relative "resolver_db.rb"
 
-class Select
+class Select < ResolverDb
     include Utils
 
     attr_accessor :symbol, :expression
@@ -10,6 +11,6 @@ class Select
     end
 
     def get_result_string
-        return self.expression.get_result_string
+        self.visit
     end
 end

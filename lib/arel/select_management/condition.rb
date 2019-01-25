@@ -1,4 +1,6 @@
-class Condition
+require_relative "resolver_db.rb"
+
+class Condition < ResolverDb
 
     attr_accessor :left, :concatenator, :right
 
@@ -19,8 +21,7 @@ class Condition
     end
 
     def get_result_string
-        return self.left.get_result_string unless self.right
-        self.left.get_result_string + concatenator + "(#{self.right.get_result_string})"
+        self.visit
     end
 
 end
