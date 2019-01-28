@@ -83,9 +83,9 @@ class SelectManager
     end
 
     def pass_to_object(obj)
-        binding.pry
         self.raw_result.each do |hash|
-            obj.attributes.each do |att|
+            obj.get_attributes.each do |att|
+                obj.class.module_eval {attr_accessor att}
                 obj.send("#{att}=", hash[att])
             end
         end

@@ -48,6 +48,10 @@ class Model
         end
     end
 
+    def get_attributes
+        self.class.get_model_attributes
+    end
+
     self.get_model_attributes.each do |att|
         define_method("find_by_#{att}") do |val|
             self.find_by(att, val)
