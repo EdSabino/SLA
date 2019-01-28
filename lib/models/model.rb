@@ -4,9 +4,18 @@ require_relative "../utils/extend_string.rb"
 class Model
     @@belongs_to_att = {}
     @@has_manys_att = {}
+    @@model_attributes = []
 
     def self.table_name
         @@table_name
+    end
+
+    def self.model_attributes(*atts)
+        @@model_attributes = atts
+    end
+
+    def self.get_model_attributes
+        @@model_attributes
     end
 
     def self.table_name=(val)
@@ -39,7 +48,7 @@ class Model
         end
     end
 
-    (self.instance_methods - Object.instance_methods).grep(/^prefix/).sort.each do |att|
+    self.get_model_attributes.each do |att|
         define_method("find_by_#{att}") do |val|
             self.find_by(att, val)
         end
