@@ -1,11 +1,6 @@
-class DefaultDb
+module SelectMethods
 
-    attr_accessor :subject
-    def initialize(obj)
-        @subject = obj
-    end
-
-    def resolve_sql
+    def resolve_select_sql
         str = "SELECT "
         str += get_selects
         str += " FROM "
@@ -19,6 +14,10 @@ class DefaultDb
 
     private
 
+    def get_table
+        self.subject.table.get_result_string
+    end
+    
     def get_selects
         return "*" unless self.subject.selects.any?
         return self.subject.selects.map { |select| select.get_result_string }.join(", ")

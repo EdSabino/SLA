@@ -1,7 +1,7 @@
 require_relative "attribute.rb"
 require_relative "select_manager.rb"
 require_relative "operators.rb"
-require_relative "resolver_db.rb"
+require_relative "../resolver_db.rb"
 
 class Table < ResolverDb
     attr_accessor :name

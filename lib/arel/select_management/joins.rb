@@ -1,7 +1,7 @@
 require_relative "../sql_literal.rb"
-require_relative "../utils.rb"
-require_relative "resolver_db.rb"
+require_relative "../resolver_db.rb"
 require_relative "joins_type/require_joins.rb"
+require_relative "../utils.rb"
 
 class Joins < ResolverDb
     include Utils

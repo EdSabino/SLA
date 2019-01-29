@@ -31,7 +31,7 @@ class Response
     def send_ok_response
         self.code = 200
         controller, method = self.path.controller_route.split("#")
-        set_response(Object.const_get("#{controller.capitalize}Controller").new("views#{self.path.url_path}.html.erb", method, request[:params]).send(method))
+        set_response(Object.const_get("#{controller.capitalize}Controller").new("app/views#{self.path.url_path}.html.erb", method, request[:params]).send(method))
     end
 
     def send_file_not_found

@@ -1,5 +1,5 @@
+require_relative "../resolver_db.rb"
 require_relative "../utils.rb"
-require_relative "resolver_db.rb"
 
 class Where < ResolverDb
     include Utils

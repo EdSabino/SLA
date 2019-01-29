@@ -12,6 +12,12 @@ class Model
 
     def self.model_attributes(*atts)
         @@model_attributes = atts
+        atts.each do |att|
+            self.module_eval {attr_accessor att}
+            define_singleton_method("find_by_#{att}") do |val|
+                self.find_by(att, val)
+            end
+        end
     end
 
     def self.get_model_attributes
@@ -52,10 +58,37 @@ class Model
         self.class.get_model_attributes
     end
 
-    self.get_model_attributes.each do |att|
-        define_method("find_by_#{att}") do |val|
-            self.find_by(att, val)
+    def self.create(args)
+        InsertManager.new(args, self.table_name).insert_into_db
+    end
+
+    def self.scoped
+        SelectManager.new(self).from(Table.new(self.table_name))
+    end
+
+    def self.joins(expression)
+        scoped.join(expression)
+    end
+
+    def self.where(expression)
+        scoped.where(expression)
+    end
+
+    def self.select(expression)
+        scoped.select(expression)
+    end
+
+    def self.all
+        scoped.get_results_obj
+    end
+
+    def save
+        hash = {}
+        self.get_attributes.each do |att|
+            hash[att] = self.send("#{att}")
         end
+        # InsertManager.new(hash, self.class.table_name).to_sql
+        self.class.create(hash)
     end
 
     private
@@ -77,8 +110,7 @@ class Model
     end
 
     def self.find_by(att, val)
-        table = Table.new(self.table_name)
-        table.where(table.attr(att).eq(val.to_s)).get_results_obj(self.new())
+        scoped.where(table.attr(att).eq(val.to_s)).get_results_obj(self)[0]
     end
 
 end

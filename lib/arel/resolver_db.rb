@@ -1,4 +1,4 @@
-require_relative "../../../database/db_config.rb"
+require_relative "../../database/db_config.rb"
 require_relative "visitor.rb"
 
 class ResolverDb

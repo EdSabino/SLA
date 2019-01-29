@@ -1,1 +1,2 @@
 require_relative "select_management/select_manager.rb"
+require_relative "insert_management/insert_manager.rb"

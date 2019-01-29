@@ -1,4 +1,4 @@
-class DefaultDbVisitor
+module AcceptSelectMethods
 
     def accept_case(obj_case)
         str = " CASE " + obj_case.whens.map {|when_obj| when_obj.get_result_string}.join(" ")
@@ -11,9 +11,6 @@ class DefaultDbVisitor
         " WHEN " + obj_when.expression.get_result_string + " THEN " + obj_when.result.get_result_string
     end
 
-    def accept_sqlliteral(obj_sql)
-        obj_sql.expression
-    end
 
     def accept_leftjoin(left_join_obj)
         " LEFT JOIN "
@@ -28,7 +25,7 @@ class DefaultDbVisitor
     end
 
     def accept_attribute(obj_attr)
-        return obj_attr.table.get_result_string + "." + obj_attr.name
+        return obj_attr.table ? obj_attr.table.get_result_string + "." + obj_attr.name : obj_attr.name
     end
 
     def accept_condition(obj_condition)
@@ -67,5 +64,4 @@ class DefaultDbVisitor
     def accept_where(obj_where)
         return obj_where.expression.get_result_string
     end
-
 end

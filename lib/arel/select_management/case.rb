@@ -1,4 +1,4 @@
-require_relative "resolver_db.rb"
+require_relative "../resolver_db.rb"
 require_relative "when.rb"
 require_relative "../utils.rb"
 

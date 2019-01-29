@@ -1,14 +1,14 @@
 require_relative "operators.rb"
+require_relative "../resolver_db.rb"
 require_relative "../utils.rb"
-require_relative "resolver_db.rb"
 
 class Attribute < ResolverDb
     include Utils
 
     attr_accessor :name, :table
 
-    def initialize(table, name)
-        @table = resolve_type(table)
+    def initialize(table=nil, name)
+        @table = resolve_type(table) if table
         @name = name.to_s
     end
 

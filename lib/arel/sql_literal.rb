@@ -1,4 +1,4 @@
-require_relative "select_management/resolver_db.rb"
+require_relative "resolver_db.rb"
 
 class SqlLiteral < ResolverDb
 
