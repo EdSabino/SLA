@@ -6,14 +6,20 @@ require_relative "../visitor.rb"
 
 
 class SelectManager
-    attr_accessor :froms, :selects, :wheres, :joins, :raw_result, :results, :limit, :groups, :class_name
+    attr_accessor :froms, :selects, :wheres, :joins, :raw_result, :results, :limit, :groups, :class_name, :includes
 
     def initialize(class_name=nil)
         @selects = []
         @wheres = []
         @joins = []
         @groups = []
+        @includes = {}
         @class_name = class_name if class_name
+    end
+
+    def include_relation(hash)
+        self.includes[hash.keys.first] = hash.values.first
+        self
     end
 
     def from(expression)
@@ -59,6 +65,10 @@ class SelectManager
     def to_sql
         return Visitor.visit(DbConfig.new.type_db.to_s, "select_sql", self)
     end
+    
+    def get_result_string
+        return " ( " + self.to_sql + " ) "
+    end
 
     private
 
@@ -77,6 +87,15 @@ class SelectManager
 
     def turn_to_hash
         self.results = []
+        includes_results = []
+        self.includes.each do |key, value|
+            next unless self.class_name.has_manys_att[value]
+            relation = self.class_name.has_manys_att[value]
+            binding.pry
+
+            includes_results << SelectManager.new.from(Table.new(Object.const_get(relation[:class_name]).table_name)).join(Table.new(self.class_name.table_name), Table.new(self.class_name.table_name).attr(:id).eq(Table.new(Object.const_get(relation[:class_name]).table_name).attr(relation[:foreign_key]))).get_results_hash
+        end
+        binding.pry
         self.raw_result.each do |hash|
             self.results << hash
         end

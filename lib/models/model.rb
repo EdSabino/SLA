@@ -5,6 +5,16 @@ class Model
     @@belongs_to_att = {}
     @@has_manys_att = {}
     @@model_attributes = []
+    @@validations = []
+
+    def initialize(args=nil)
+        @errors = []
+        return self unless args
+        args.each do |key, value|
+            self.send("#{key}=", value)
+        end
+        return self
+    end
 
     def self.table_name
         @@table_name
@@ -18,6 +28,18 @@ class Model
                 self.find_by(att, val)
             end
         end
+    end
+
+    def errors
+        @errors
+    end
+
+    def errors=(val)
+        @errors << val
+    end
+
+    def self.validations
+        @@validations
     end
 
     def self.get_model_attributes
@@ -34,6 +56,10 @@ class Model
 
     def self.belongs_to_att
         @@belongs_to_att
+    end
+
+    def self.validates(type, *opts)
+        @@validations << Object.const_get("Validate#{type.capitalize.constantize}").new(opts) 
     end
 
     def self.has_many(relation, opts)
@@ -59,7 +85,7 @@ class Model
     end
 
     def self.create(args)
-        InsertManager.new(args, self.table_name).insert_into_db
+        self.new(args).save
     end
 
     def self.scoped
@@ -83,12 +109,12 @@ class Model
     end
 
     def save
+        validate
         hash = {}
         self.get_attributes.each do |att|
             hash[att] = self.send("#{att}")
         end
-        # InsertManager.new(hash, self.class.table_name).to_sql
-        self.class.create(hash)
+        InsertManager.new(hash, self.table_name).insert_into_db
     end
 
     private
@@ -111,6 +137,12 @@ class Model
 
     def self.find_by(att, val)
         scoped.where(table.attr(att).eq(val.to_s)).get_results_obj(self)[0]
+    end
+
+    def validate
+        self.class.validations.each do |validator|
+            validator.validate()
+        end
     end
 
 end

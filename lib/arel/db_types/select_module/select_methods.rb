@@ -9,6 +9,7 @@ module SelectMethods
         str += " WHERE (" + get_where + ")" if self.subject.wheres.any? 
         str += " LIMIT " + get_limit if self.subject.limit
         str += " GROUP BY " + get_group if self.subject.groups.any?
+        puts str
         return str
     end
 

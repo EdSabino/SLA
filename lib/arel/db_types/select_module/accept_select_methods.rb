@@ -64,4 +64,20 @@ module AcceptSelectMethods
     def accept_where(obj_where)
         return obj_where.expression.get_result_string
     end
+
+    def accept_false_class_resolver(obj_false)
+        return "f"
+    end
+
+    def accept_true_class_resolver(obj_true)
+        return "t"
+    end
+
+    def accept_fixnum_resolver(obj_fix_num)
+        return "#{obj_fix_num.register}"
+    end
+
+    def accept_float_resolver(obj_float)
+        return "#{obj_float.register}"
+    end
 end

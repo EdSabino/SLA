@@ -19,6 +19,8 @@ class Parser
             params: get_params(params, method),
             method: method
         }
+        puts self.parsed_request[:params]
+        self.parsed_request
     end
 
     private
